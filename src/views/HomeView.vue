@@ -6,6 +6,7 @@ import Column from 'primevue/column'
 const formData = ref({
   username: '',
   password: '',
+  confirmPassword: '',
   isAustralian: false,
   reason: '',
   gender: ''
@@ -26,6 +27,7 @@ const clearForm = () => {
   formData.value = {
     username: '',
     password: '',
+    confirmPassword: '',
     isAustralian: false,
     reason: '',
     gender: ''
@@ -35,6 +37,7 @@ const clearForm = () => {
 const errors = ref({
   username: null,
   password: null,
+  confirmPassword: null,
   resident: null,
   gender: null,
   reason: null
@@ -70,6 +73,14 @@ const validatePassword = (blur) => {
     errors.value.password = null
   }
 }
+
+const validateConfirmPassword = (blur) => {
+  if (formData.value.confirmPassword !==  formData.value.password) {
+    if(blur) errors.value.confirmPassword = 'password not match'
+  }else {
+    errors.value.confirmPassword = null
+  }
+}
 </script>
 
 <template>
@@ -98,6 +109,17 @@ const validatePassword = (blur) => {
             </div>
 
             <div class="col-md-6 col-sm-6">
+              <label for="gender" class="form-label">Gender</label>
+              <select class="form-select" id="gender" v-model="formData.gender" required>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            
+            <div class="col-md-6 col-sm-6">
               <label for="password" class="form-label">Password</label>
               <input
                 type="password"
@@ -108,6 +130,18 @@ const validatePassword = (blur) => {
                 v-model="formData.password"
               />
               <div v-if="errors.password" class="text-danger">{{ errors.password }}</div>
+            </div>
+
+            <div class="col-md-6 col-sm-6">
+              <label for="Confirm password" class="form-label">Confirm Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                @blur="() => validateConfirmPassword(true)"
+                v-model="formData.confirmPassword"
+              />
+              <div v-if="errors.confirmPassword" class="text-danger">{{ errors.confirmPassword }}</div>
             </div>
           </div>
           <div class="row mb-3">
@@ -121,14 +155,6 @@ const validatePassword = (blur) => {
                 />
                 <label class="form-check-label" for="isAustralian">Australian Resident?</label>
               </div>
-            </div>
-            <div class="col-md-6 col-sm-6">
-              <label for="gender" class="form-label">Gender</label>
-              <select class="form-select" id="gender" v-model="formData.gender" required>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
             </div>
           </div>
           <div class="mb-3">
@@ -184,37 +210,5 @@ const validatePassword = (blur) => {
 </template>
 
 <style scoped>
-.container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  max-width: 80vw;
-  margin: 0 auto;
-  padding: 20px;
-  /* background-color: #e0bfbf; */
-  border-radius: 10px;
-}
 
-/* Class selectors */
-.form {
-  text-align: center;
-  margin-top: 50px;
-}
-
-/* ID selectors */
-#username:focus,
-#password:focus,
-#isAustralian:focus,
-.card {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-.card-header {
-  background-color: #275fda;
-  color: white;
-  padding: 10px;
-  border-radius: 10px 10px 0 0;
-}
-.list-group-item {
-  padding: 10px;
-}
 </style>

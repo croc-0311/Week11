@@ -5,15 +5,46 @@
     <header class="d-flex justify-content-center py-3">
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <a href="#" class="nav-link active" aria-current="page">Home (Week 4)</a>
+          <router-link to="/" class="nav-link" active-class="active" aria-current="page"
+            >Home (Week 5)</router-link
+          >
         </li>
-        <li class="nav-item"><a href="#" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="#" class="nav-link">Contact us</a></li>
+        <li class="nav-item">
+          <router-link to="/addBook" class="nav-link" active-class="active">AddBook</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/member" class="nav-link" active-class="active">About</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/getBookCount" class="nav-link" active-class="active">Get Book Count</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/weatherView" class="nav-link" active-class="active">WeatherView</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/countBookAPI" class="nav-link" active-class="active">Count Book API</router-link>
+        </li>
+        <li v-if="!isLogin">
+          <router-link to="/firebaseSignin" class="nav-link" active-class="active">FirebaseSignIn</router-link>
+        </li>
+        <li v-if="isLogin">
+          <router-link to="/logout" class="nav-link" active-class="active" @click="logout">FirebaseLogout</router-link>
+        </li>
       </ul>
     </header>
   </div>
 </template>
 
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const isLogin = ref(false);
+
+onMounted(() => {
+  const authenticated = localStorage.getItem('isAuthenticated');
+  isLogin.value = authenticated;
+});
+</script>
 <style scoped>
 .b-example-divider {
   height: 3rem;
